@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const el = ref<HTMLDivElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
-useRainEffect(canvas, el);
+useRainEffect(canvas, el)
 
 const onResize = () => {
     if (canvas.value && el.value) {
