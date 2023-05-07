@@ -1,4 +1,5 @@
 <template>
+    <h1 class="test">test</h1>
     <div ref="el" class="container" @resize="onResize">
         <canvas ref="canvas"></canvas>
     </div>
@@ -26,12 +27,11 @@ onUnmounted(() => {
 });
 </script>
   
-<style>
-html,
-body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+<style lang="scss">
+@import '~/assets/sass/app.scss';
+
+.test {
+    color: $primary-color;
 }
 
 .container {
