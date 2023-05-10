@@ -1,0 +1,9 @@
+{
+  "_hash": "nw89JiXsDP",
+  "project": {
+    "rootDir": "/var/www/html/portfolio"
+  },
+  "versions": {
+    "nuxt": "3.4.3"
+  }
+}
