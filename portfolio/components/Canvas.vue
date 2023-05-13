@@ -1,5 +1,5 @@
 <template>
-    <h1 class="test">test h1</h1>
+    <h1 class="test">test h</h1>
     <div ref="el" class="container" @resize="onResize">
         <canvas ref="canvas"></canvas>
     </div>

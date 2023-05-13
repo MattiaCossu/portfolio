@@ -3,20 +3,26 @@ services:
   nginx:
     image: nginx:1.15
     working_dir: /var/www/html
+    container_name: nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./portfolio:/var/www/html/portfolio
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - node
+    networks:
+      - portfolio
 
   node:
+    build:
+        dockerfile: Dockerfile
+        context: ./config/portfolio
     ports:
       - "24678:24678"
-    user: root
-    build:
-      dockerfile: Dockerfile
-      context: ./config/portfolio
+    user: node
+    container_name: node
     working_dir: /var/www/html/portfolio
     volumes:
       - ./portfolio:/var/www/html/portfolio
@@ -24,7 +30,7 @@ services:
     stdin_open: true
     tty: true
     networks:
-      - default
+      - portfolio
 
 networks:
   portfolio:
