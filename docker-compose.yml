@@ -8,27 +8,11 @@ services:
       - "443:443"
     volumes:
       - ./portfolio:/var/www/html/portfolio
-      - ./config/nginx/includes:/etc/nginx/includes:ro
-      - ./config/nginx/auth:/etc/nginx/auth
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
 
-  mysql:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - mysqldata:/var/lib/mysql
-
-  portfolio:
+  node:
     ports:
       - "24678:24678"
-      - "9222:9222"
-      - "5555:5555"
     user: root
     build:
       dockerfile: Dockerfile
@@ -42,6 +26,6 @@ services:
     networks:
       - default
 
-volumes:
-  mysqldata:
-    driver: local
+networks:
+  portfolio:
+    driver: bridge

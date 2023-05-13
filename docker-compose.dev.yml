@@ -5,17 +5,5 @@ services:
     #  - ./config/ssl:/etc/ssl:ro
       - ./config/nginx/sites-dev:/etc/nginx/sites-enabled
 
-  portfolio:
+  node:
     command: sh -c "npm run dev" 
-
-  mysql:
-    platform: linux/amd64
-    image: mariadb:10.4.25  
-
-  mailhog:
-    container_name: mailhog_portfolio
-    image: mailhog/mailhog
-    restart: always
-    ports:
-      - "1025:1025"
-      - "8025:8025"

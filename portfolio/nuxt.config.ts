@@ -2,13 +2,10 @@
 export default defineNuxtConfig({
     vite: {
         server: {
-            hmr: {
-                protocol: 'ws',
-                host: 'localhost', // o IP server Nginx
-                
-                port: 24678,
-            }
-        },
+          hmr: {
+            protocol: 'ws',
+          }
+        }
     },
 
     modules: [
