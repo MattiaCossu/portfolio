@@ -138,7 +138,7 @@ const createDropBase = (
 
 const drawDrop = (ctx: CanvasRenderingContext2D, drop: DropBase) => {
     drop.color = getColor()
-    ctx.font = `${drop.radius * 16}px sans-serif` // font size
+    ctx.font = `${drop.radius * 18}px Nintendoid1` // font size
 
     ctx.save()
 

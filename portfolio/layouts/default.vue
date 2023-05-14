@@ -1,11 +1,11 @@
 <template>
     <header>
-        <TheHeader />
+        <AppHeader />
     </header>
     <main>
         <slot />
     </main>
     <footer>
-        <TheFooter />
+        <AppFooter />
     </footer>
 </template>

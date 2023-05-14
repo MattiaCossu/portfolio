@@ -5,6 +5,9 @@
 </template>
 
 <style lang="scss">
+@import '~/assets/sass/app.scss';
 
-@import '~/assets/sass/app.scss'
+html {
+  background-color: var(--background-color);
+}
 </style>
