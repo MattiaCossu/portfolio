@@ -1,11 +1,13 @@
 <template>
-    <h1 class="test">test h</h1>
+    <h1 class="test">test ciao</h1>
     <div ref="el" class="container" @resize="onResize">
         <canvas ref="canvas"></canvas>
     </div>
 </template>
   
 <script setup lang="ts">
+import { useDark } from '@vueuse/core';
+
 const el = ref<HTMLDivElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 useRainEffect(canvas, el)

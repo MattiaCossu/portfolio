@@ -2,6 +2,12 @@ import { DropBase } from '@/types/DropBase'
 import { Droplet } from '@/types/Droplet'
 import { Drop } from '@/types/Drop'
 
+const isDark = useDark()
+
+const getColor = () => {
+    return isDark.value ? '#00ff00' : '#0000ff' 
+}
+
 export function useRainEffect(canvas: Ref<HTMLCanvasElement | null>, containerRef: Ref<HTMLElement | null>) {
     let animationFrameId = 0
 
@@ -26,6 +32,15 @@ export function useRainEffect(canvas: Ref<HTMLCanvasElement | null>, containerRe
 
         let drops: Drop[] = []
         let droplets: Droplet[] = []
+
+        watch(isDark, () => {
+            drops.forEach(drop => {
+                drop.color = getColor()
+            })
+            droplets.forEach(droplet => {
+                droplet.color = getColor()
+            })
+        })
 
         let dropSpawnCounter = 0
 
@@ -79,8 +94,6 @@ export function useRainEffect(canvas: Ref<HTMLCanvasElement | null>, containerRe
     })
 }
 
-
-
 const createDropBase = (
     x: number,
     y: number,
@@ -95,10 +108,13 @@ const createDropBase = (
 
     const value = String.fromCharCode(0x30a0 + Math.round(Math.random() * 96))
 
+    const rotation = ref(0)
+
     const velocity = {
         x: options.velocity?.x ? ref(options.velocity.x) : ref(0),
         y: options.velocity?.y ? ref(options.velocity.y) : ref(1)
-    };
+    }
+
 
     const color = options.color || '#00ff00'
     const radius = options.radius || 2
@@ -115,14 +131,32 @@ const createDropBase = (
         radius,
         value,
         bounces,
+        rotation,
         updateBase
     };
 };
 
 const drawDrop = (ctx: CanvasRenderingContext2D, drop: DropBase) => {
-    ctx.fillStyle = drop.color;
+    drop.color = getColor()
     ctx.font = `${drop.radius * 16}px sans-serif` // font size
-    ctx.fillText(drop.value, drop.position.x.value, drop.position.y.value) // ref value for x e y
+
+    ctx.save()
+
+    // Sposta il contesto al centro della goccia
+    ctx.translate(drop.position.x.value, drop.position.y.value)
+
+    // Move context to the left of the text (bottom of the drop)
+    ctx.translate(-drop.radius, 0)
+
+    // Ruota il contesto
+    ctx.rotate(drop.rotation.value)
+
+    // Disegna la goccia al centro del contesto ruotato
+    ctx.fillStyle = drop.color
+    ctx.fillText(drop.value, 0, 0) // now the position is at (0, 0)
+
+    // Ripristina lo stato del contesto
+    ctx.restore()
 }
 
 const createDrop = (
@@ -141,6 +175,9 @@ const createDrop = (
 
                 // resize every bounce
                 drop.radius *= 0.7
+
+                // rotation after bounce
+                drop.rotation.value += (Math.random() - 0.5) * 0.8 * Math.PI // adjust this for a larger/smaller rotation
 
                 // chang direction every bounce for simulate a real jump
                 drop.velocity.y.value = -drop.velocity.y.value * 0.5

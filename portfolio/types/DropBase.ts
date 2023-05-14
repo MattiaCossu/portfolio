@@ -12,5 +12,6 @@ export interface DropBase {
     updateBase: () => void;
     timeToLive?: number;
     value: string;
+    rotation: Ref<number>;
     bounces: Ref<number>;
 }
