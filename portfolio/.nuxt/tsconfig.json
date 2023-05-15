@@ -62,6 +62,9 @@
       "vue-demi": [
         "node_modules/nuxt/dist/app/compat/vue-demi"
       ],
+      "tslib": [
+        "tslib/tslib.es6"
+      ],
       "#imports": [
         ".nuxt/imports"
       ],

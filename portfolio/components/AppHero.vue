@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const el = ref<HTMLDivElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 useRainEffect(canvas, el)
@@ -18,6 +19,13 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('resize', onResize)
 });
+
+const { text, startTyping } = useTypingEffect('Mattia Cossu')
+
+onMounted(async () => {
+    await startTyping();
+})
+
 </script>
 
 <template>
@@ -25,8 +33,9 @@ onUnmounted(() => {
         <canvas ref="canvas"></canvas>
         <div class="hero--container">
             <p class="hero--heading">Hi all, I am</p>
-            <h1 class="hero--title">Mattia</h1>
-            <h2 class="hero--subtitle">> Computer Scientist</h2>
+            
+            <h1 class="hero--title">{{ text || '&nbsp'}}</h1>
+            <h2  v-motion-roll-left class="hero--subtitle">> Computer Scientist</h2>    
             <div class="hero--content">
                 <div>// welcome to my portfolio</div>
                 <div>// you can also see my projects on my Github page</div>

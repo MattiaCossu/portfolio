@@ -13,6 +13,7 @@
     "@vueuse/core": "^10.1.2",
     "@vueuse/nuxt": "^10.1.2",
     "nuxt": "^3.4.3",
+    "nuxt-use-motion": "^2.0.0-beta.11",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.0"
   },

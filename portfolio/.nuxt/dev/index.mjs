@@ -15,12 +15,59 @@ import { createCall, createFetch } from 'file:///var/www/html/portfolio/node_mod
 import { createHooks } from 'file:///var/www/html/portfolio/node_modules/hookable/dist/index.mjs';
 import { snakeCase } from 'file:///var/www/html/portfolio/node_modules/scule/dist/index.mjs';
 import { klona } from 'file:///var/www/html/portfolio/node_modules/klona/dist/index.mjs';
-import defu, { defuFn } from 'file:///var/www/html/portfolio/node_modules/defu/dist/defu.mjs';
 import { hash } from 'file:///var/www/html/portfolio/node_modules/ohash/dist/index.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file:///var/www/html/portfolio/node_modules/ufo/dist/index.mjs';
 import { createStorage, prefixStorage } from 'file:///var/www/html/portfolio/node_modules/unstorage/dist/index.mjs';
 import unstorage_47drivers_47fs from 'file:///var/www/html/portfolio/node_modules/unstorage/drivers/fs.mjs';
 import { toRouteMatcher, createRouter } from 'file:///var/www/html/portfolio/node_modules/radix3/dist/index.mjs';
+
+function isObject(value) {
+  return value !== null && typeof value === "object";
+}
+function _defu(baseObject, defaults, namespace = ".", merger) {
+  if (!isObject(defaults)) {
+    return _defu(baseObject, {}, namespace, merger);
+  }
+  const object = Object.assign({}, defaults);
+  for (const key in baseObject) {
+    if (key === "__proto__" || key === "constructor") {
+      continue;
+    }
+    const value = baseObject[key];
+    if (value === null || value === void 0) {
+      continue;
+    }
+    if (merger && merger(object, key, value, namespace)) {
+      continue;
+    }
+    if (Array.isArray(value) && Array.isArray(object[key])) {
+      object[key] = [...value, ...object[key]];
+    } else if (isObject(value) && isObject(object[key])) {
+      object[key] = _defu(
+        value,
+        object[key],
+        (namespace ? `${namespace}.` : "") + key.toString(),
+        merger
+      );
+    } else {
+      object[key] = value;
+    }
+  }
+  return object;
+}
+function createDefu(merger) {
+  return (...arguments_) => (
+    // eslint-disable-next-line unicorn/no-array-reduce
+    arguments_.reduce((p, c) => _defu(p, c, "", merger), {})
+  );
+}
+const defu = createDefu();
+const defuFn = createDefu((object, key, currentValue) => {
+  if (typeof object[key] !== "undefined" && typeof currentValue === "function") {
+    object[key] = currentValue(object[key]);
+    return true;
+  }
+});
 
 const inlineAppConfig = {};
 
@@ -658,8 +705,8 @@ const _template = (messages) => _render({ messages: { ..._messages, ...messages 
 const template = _template;
 
 const errorDev = /*#__PURE__*/Object.freeze({
-      __proto__: null,
-      template: template
+  __proto__: null,
+  template: template
 });
 
 const appRootId = "__nuxt";
@@ -877,14 +924,14 @@ function splitPayload(ssrContext) {
 }
 
 const renderer$1 = /*#__PURE__*/Object.freeze({
-      __proto__: null,
-      default: renderer
+  __proto__: null,
+  default: renderer
 });
 
 const _virtual__headStatic = {"headTags":"<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">","bodyTags":"","bodyTagsOpen":"","htmlAttrs":"","bodyAttrs":""};
 
 const _virtual__headStatic$1 = /*#__PURE__*/Object.freeze({
-      __proto__: null,
-      default: _virtual__headStatic
+  __proto__: null,
+  default: _virtual__headStatic
 });
 //# sourceMappingURL=index.mjs.map
