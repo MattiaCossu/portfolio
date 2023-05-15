@@ -2,6 +2,7 @@
 
 const el = ref<HTMLDivElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
+
 useRainEffect(canvas, el)
 
 const onResize = () => {
@@ -9,23 +10,22 @@ const onResize = () => {
         canvas.value.width = el.value.clientWidth
         canvas.value.height = el.value.clientHeight
     }
-};
+}
+
+/*const { text: titleChars, startTyping } = useTypingEffect('Mattia Cossu')
+
+onMounted(async () => {
+    await startTyping();
+})*/
 
 onMounted(() => {
     window.addEventListener('resize', onResize)
     onResize();
-});
+})
 
 onUnmounted(() => {
     window.removeEventListener('resize', onResize)
-});
-
-const { text, startTyping } = useTypingEffect('Mattia Cossu')
-
-onMounted(async () => {
-    await startTyping();
 })
-
 </script>
 
 <template>
@@ -33,8 +33,7 @@ onMounted(async () => {
         <canvas ref="canvas"></canvas>
         <div class="hero--container">
             <p class="hero--heading">Hi all, I am</p>
-            
-            <h1 class="hero--title">{{ text || '&nbsp'}}</h1>
+            <h1 v-motion-roll-left class="hero--title">Mattia</h1>
             <h2  v-motion-roll-left class="hero--subtitle">> Computer Scientist</h2>    
             <div class="hero--content">
                 <div>// welcome to my portfolio</div>
@@ -76,6 +75,8 @@ onMounted(async () => {
             font-weight: 450;
         }
         .hero--title {
+            display: flex;
+            flex-direction: row;
             font-weight: 400;
             margin: 0.7rem 0;
             font-family: Nintendoid1;

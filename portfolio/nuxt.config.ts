@@ -11,14 +11,9 @@ export default defineNuxtConfig({
     modules: [
         '@vueuse/nuxt',
         'nuxt-use-motion',
-        '@nuxtjs/google-fonts'
     ],
 
-    googleFonts: {
-      families: {
-        'Fira Code': [100, 200, 300, 400, 500, 600, 700],
-      }
-    },
+    
 
     css: ['~/assets/sass/app.scss']
 })
