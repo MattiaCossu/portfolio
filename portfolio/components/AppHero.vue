@@ -58,6 +58,7 @@ onUnmounted(() => {
         justify-content: center;
         align-items: left;
         margin: 0 2rem; 
+        z-index: 9999;
         
         > * {
             margin: 0;

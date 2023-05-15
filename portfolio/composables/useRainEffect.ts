@@ -5,7 +5,7 @@ import { Drop } from '@/types/Drop'
 const isDark = useDark()
 
 const getColor = () => {
-    return isDark.value ? '#00ff00' : '#0000ff' 
+    return getComputedStyle(document.documentElement).getPropertyValue('--secondary-color-accent').trim()
 }
 
 export function useRainEffect(canvas: Ref<HTMLCanvasElement | null>, containerRef: Ref<HTMLElement | null>) {
@@ -73,7 +73,7 @@ export function useRainEffect(canvas: Ref<HTMLCanvasElement | null>, containerRe
 
             dropSpawnCounter++
 
-            const dropSpawnRate = 60
+            const dropSpawnRate = 120
 
             if (dropSpawnCounter >= dropSpawnRate) {
                 const x = Math.floor(Math.random() * (canvas.value?.width || 0))
