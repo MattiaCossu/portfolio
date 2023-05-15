@@ -1,5 +1,28 @@
+<script setup lang="ts">
+const el = ref<HTMLDivElement | null>(null)
+const canvas = ref<HTMLCanvasElement | null>(null)
+useRainEffect(canvas, el)
+
+const onResize = () => {
+    if (canvas.value && el.value) {
+        canvas.value.width = el.value.clientWidth
+        canvas.value.height = el.value.clientHeight
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('resize', onResize)
+    onResize();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', onResize)
+});
+</script>
+
 <template>
-    <div class="hero">
+    <div ref="el" class="hero">
+        <canvas ref="canvas"></canvas>
         <div class="hero--container">
             <p class="hero--heading">Hi all, I am</p>
             <h1 class="hero--title">Mattia</h1>
@@ -22,12 +45,19 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 0 2rem;                    
+    
+    canvas {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: -9999;
+    }
     .hero--container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: left;
+        margin: 0 2rem; 
         
         > * {
             margin: 0;
