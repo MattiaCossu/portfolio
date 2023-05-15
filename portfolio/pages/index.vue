@@ -1,3 +1,3 @@
 <template>
-    <Canvas />
+    <AppHero />
 </template>

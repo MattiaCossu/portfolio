@@ -38,10 +38,16 @@
    */
   
   h1 {
-    font-size: 2em;
-    margin: 0.67em 0;
+    font-size: var(--fontsize-large);
   }
-  
+
+  h2 {
+    font-size: var(--fontsize-medium);
+  }
+
+  h3 {
+    font-size: var(--fontsize-small)
+  }  
   /* Grouping content
      ========================================================================== */
   

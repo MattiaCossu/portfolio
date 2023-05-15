@@ -3,6 +3,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     'AppFooter': typeof import("../components/AppFooter.vue")['default']
     'AppHeader': typeof import("../components/AppHeader.vue")['default']
+    'AppHero': typeof import("../components/AppHero.vue")['default']
     'Canvas': typeof import("../components/Canvas.vue")['default']
     'SvgHamburger': typeof import("../components/svg/Hamburger.vue")['default']
     'SvgMoon': typeof import("../components/svg/Moon.vue")['default']
@@ -27,6 +28,7 @@ declare module 'vue' {
     'Body': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
     'LazyAppFooter': typeof import("../components/AppFooter.vue")['default']
     'LazyAppHeader': typeof import("../components/AppHeader.vue")['default']
+    'LazyAppHero': typeof import("../components/AppHero.vue")['default']
     'LazyCanvas': typeof import("../components/Canvas.vue")['default']
     'LazySvgHamburger': typeof import("../components/svg/Hamburger.vue")['default']
     'LazySvgMoon': typeof import("../components/svg/Moon.vue")['default']
@@ -54,6 +56,7 @@ declare module 'vue' {
 
 export const AppFooter: typeof import("../components/AppFooter.vue")['default']
 export const AppHeader: typeof import("../components/AppHeader.vue")['default']
+export const AppHero: typeof import("../components/AppHero.vue")['default']
 export const Canvas: typeof import("../components/Canvas.vue")['default']
 export const SvgHamburger: typeof import("../components/svg/Hamburger.vue")['default']
 export const SvgMoon: typeof import("../components/svg/Moon.vue")['default']
@@ -78,6 +81,7 @@ export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const LazyAppFooter: typeof import("../components/AppFooter.vue")['default']
 export const LazyAppHeader: typeof import("../components/AppHeader.vue")['default']
+export const LazyAppHero: typeof import("../components/AppHero.vue")['default']
 export const LazyCanvas: typeof import("../components/Canvas.vue")['default']
 export const LazySvgHamburger: typeof import("../components/svg/Hamburger.vue")['default']
 export const LazySvgMoon: typeof import("../components/svg/Moon.vue")['default']

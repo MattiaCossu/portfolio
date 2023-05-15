@@ -9,10 +9,12 @@ const toggleMenu = () => {
 }
 
 const navigation = [
-    { name: 'home', href: '/' },
-    { name: 'about', href: '/about' },
-    { name: 'blog', href: '/blog' }
+    { name: '_home', href: '/' },
+    { name: '_about', href: '/about' },
+    { name: '_blog', href: '/blog' }
 ]
+
+const title = '< Logo />'
 
 </script>
 
@@ -20,7 +22,7 @@ const navigation = [
     <div class="navbar-container">
         <div class="navbar">
             <div class="navbar--logo">
-                <h1>Logo</h1>
+                <h1>{{ title }}</h1>
             </div>
             <Transition name="slide-fade">
                 <div class="navbar--links--mobile" v-if="menuOpen">
@@ -73,8 +75,6 @@ const navigation = [
     position: fixed;
     width: 100%;
     z-index: 10000;
-    font-family: Nintendoid1;
-
 
     &--hamburger {
         svg {
@@ -91,7 +91,7 @@ const navigation = [
     &--logo {
         h1 {
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: 450;
         }
     }
 
@@ -106,7 +106,6 @@ const navigation = [
             width: 1.5rem;
             height: 1.5rem;
             cursor: pointer;
-            color: var(--primary-color);
         }
     }
 
@@ -129,6 +128,10 @@ const navigation = [
     &--links {
         display: none;
 
+        a {
+            color: var(--secondary-color-neutral);
+        }
+
         @include tablet-up {
             display: flex;
             justify-content: space-between;
@@ -137,9 +140,8 @@ const navigation = [
             height: 100%;
             
             a {
-                color: var(--primary-color);
                 font-size: 1rem;
-                font-weight: 500;
+                font-weight: 450;
                 text-decoration: none;
                 margin: 0 1rem;
                 text-align: center;
@@ -159,7 +161,6 @@ const navigation = [
             align-items: center;
             width: 100%;
             height: calc(100vh - 5rem);
-            background-color: var(--primary-color);
             position: absolute;
             top: 5rem;
             left: 0;

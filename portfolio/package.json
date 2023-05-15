@@ -15,5 +15,8 @@
     "nuxt": "^3.4.3",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.0"
+  },
+  "dependencies": {
+    "@nuxtjs/google-fonts": "^3.0.0-1"
   }
 }
