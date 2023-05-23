@@ -1,3 +1,4 @@
 <template>
     <AppHero />
+    <Slider />
 </template>

@@ -1,0 +1,61 @@
+{
+  "name": "nuxt-use-motion",
+  "version": "2.0.0-beta.11",
+  "description": "🤹 A Nuxt module putting your components in motion",
+  "keywords": [
+    "nuxt",
+    "module",
+    "nuxt-module",
+    "vue",
+    "use",
+    "motion",
+    "popmotion",
+    "composable"
+  ],
+  "repository": "https://github.com/Tahul/nuxt-use-motion",
+  "license": "MIT",
+  "main": "dist/module.mjs",
+  "types": "dist/module.d.ts",
+  "module": "dist/module.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "dependencies": {
+    "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
+    "@vueuse/motion": "2.0.0-beta.4",
+    "vue-demi": "^0.12.1",
+    "defu": "^5.0.0"
+  },
+  "devDependencies": {
+    "@nuxt/bridge": "npm:@nuxt/bridge-edge@latest",
+    "@babel/plugin-transform-runtime": "latest",
+    "@babel/preset-env": "latest",
+    "@babel/preset-typescript": "latest",
+    "@nuxt/test-utils": "latest",
+    "@nuxt/types": "latest",
+    "@nuxtjs/eslint-config-typescript": "latest",
+    "babel-eslint": "latest",
+    "eslint": "latest",
+    "nuxt-edge": "latest",
+    "unbuild": "0.6.7",
+    "standard-version": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "dev": "nuxt example",
+    "build:example": "nuxt build example",
+    "serve:example": "nuxt start example",
+    "lint": "eslint --ext .js,.ts,.vue ."
+  },
+  "readme": "# 🤹 nuxt-use-motion\n\nThis module is a **Nuxt** implementation of the Vue Composables [**@vueuse/motion**](https://github.com/vueuse/motion).\n\nFor a better **understanding** of this **module**, you should check out the original [**composables page**](https://github.com/vueuse/motion).\n\n[🌍 **Documentation**](https://vueuse-motion.netlify.app)\n\n[👀 **Demos**](https://vueuse-motion-demo.netlify.app)\n\n## Setup\n\nOnce you installed it, add `nuxt-use-motion` dependency to your project\n\n```bash\npnpm add --dev nuxt-use-motion\n# or\nnpm i -D nuxt-use-motion\n```\n\nAdd `nuxt-use-motion` to the `buildModules` section of `nuxt.config.js`\n\n```js\n// nuxt.config.js\n{\n  buildModules: ['nuxt-use-motion']\n}\n```\n\nConfigure your animations 🤹\n\n```js\n// nuxt.config.js\n{\n  motion: {\n    directives: {\n      'pop-bottom': {\n        initial: {\n          scale: 0,\n          opacity: 0,\n          y: 100\n        },\n        visible: {\n          scale: 1,\n          opacity: 1,\n          y: 0\n        },\n      }\n    }\n  }\n}\n```\n\n## Usage\n\nIn **addition** to the native [**@vueuse/motion**](https://vueuse-motion.netlify.app) features, the module allows you to **define** animations **presets** from your **nuxt.config.js**.\n\nOnce **defined**, as shown above, those **animations** will be available using **directives**, available in **every component** of your **app**.\n\n```vue\n<template>\n  <div v-motion-pop-bottom>Pop from bottom! 🎺</div>\n</template>\n```\n\nTo see more about how to **control** animations declared with **directives**, check out [**Directive Usage**](https://vueuse-motion.netlify.app/directive-usage).\n\nTo see more about what **properties** you can **animate**, check out [**Motion Properties**](https://vueuse-motion.netlify.app/motion-properties).\n\nTo see more about how to **create** your own **animations** styles, check out [**Transition Properties**](https://vueuse-motion.netlify.app/transition-properties).\n\nTo see more about what are **variants** and how you can **use** them, check out [**Variants**](https://vueuse-motion.netlify.app/variants).\n\nTo see more about how to **control** your declared **variants**, check out [**Motion Instance**](https://vueuse-motion.netlify.app/motion-instance).\n\n## Development\n\n1. Clone this repository\n2. Install dependencies using `pnpm install`\n3. Start development server using `pnpm dev`\n\n## License\n\n[MIT License](./LICENSE)\n"
+}

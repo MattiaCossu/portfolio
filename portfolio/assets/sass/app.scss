@@ -24,6 +24,18 @@
     --fontsize-small: 1.125rem;       /* 18px / 16px = 1.125rem */
     --fontsize-extra-small: 1rem;     /* 16px / 16px = 1rem */
     --fontsize-tiny: 0.875rem;        /* 14px / 16px = 0.875rem */
+    --hero-width: 100%;
+    --hero-height: 100%;
+  
+    --card-width: 200px;
+    --card-height: 320px;
+    --card-border-radius: 20px;
+    --card-margin: 16px;
+    --card-bg-size: cover;
+    --card-bg-position: center;
+    --card-padding: 16px;
+    --card-display: flex;
+    --card-align-items: flex-end;
 }
 
 * {
