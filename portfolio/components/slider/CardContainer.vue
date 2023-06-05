@@ -14,6 +14,7 @@ const props = defineProps({
 const emit = defineEmits(["cardSelected"])
 
 let pressed = ref(false)
+let selected = ref(false)
 let startX = ref(0)
 let startScrollLeft = ref(0)
 
@@ -47,6 +48,7 @@ const handleMouseMove = (event: MouseEvent) => {
 
 const onCardClick = (card: Card) => {
   emit("cardSelected", card)
+  selected.value = !selected.value
 }
 </script>
 
@@ -60,6 +62,7 @@ const onCardClick = (card: Card) => {
       v-for="card in cards" 
       :key="card.id" 
       :card="card" 
+      :class="[selected.valueOf() ? 'slideIn' : '']"
       @click="onCardClick(card)" 
     />
   </div>
@@ -68,16 +71,27 @@ const onCardClick = (card: Card) => {
 <style scoped>
 .card-container {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: var(--card-container-height);
-  width: var(--card-container-width);
-  margin: var(--card-container-margin);
-  padding: var(--card-container-padding);
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  cursor: grab;
+  flex-wrap: nowrap;
+  width: calc(var(--card-width) * 4.7);
+  padding-right: 16px;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.card-container::-webkit-scrollbar { /* WebKit */
+  width: 0;
+  height: 0;
+}
+.card.slideIn {
+  animation: slideInFromRight 1s forwards;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    margin-left: calc(var(--card-margin) * 3);
+  }
+  100% {
+    margin-left: var(--card-margin);
+  }
 }
 </style>

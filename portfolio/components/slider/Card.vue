@@ -6,23 +6,29 @@ interface Card {
   name: string
 }
 
+let pressed = ref(false)
+
 const props = defineProps({
   card: Object as PropType<Card>
-});
+})
 
-// ipotetica funzione di animazione
-const animateCard = () => {
-  // implementa qui l'animazione
-};
+const handleMouseDown = (event: MouseEvent) => {
+  pressed.value = !pressed.value
+}
 </script>
 
 <template>
-    <div class="card" :style="{ 'background-image': 'url(' + card?.image +')'}">
+    <div 
+      class="card" 
+      @mousedown="handleMouseDown"
+      :style="{ 'background-image': 'url(' + card?.image +')'}"
+      :class="[pressed.valueOf() ? 'slideIn' : '']"
+    >
       {{ card?.name }}
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .card {
   width: var(--card-width);
   height: var(--card-height);
@@ -35,7 +41,11 @@ const animateCard = () => {
   flex: 0 0 auto;
   display: var(--card-display);
   align-items: var(--card-align-items);
-  /*box-shadow: 5px 6px 5px 1px rgb(0 0 0 / 40%);*/
+  box-shadow: 5px 6px 5px 1px rgb(0 0 0 / 40%);
+
+  > * {
+    pointer-events: none;
+  }
 }
 </style>
 
