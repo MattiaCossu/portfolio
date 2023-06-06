@@ -131,6 +131,7 @@ const createDropBase = (
         radius,
         value,
         bounces,
+        timeToLive: 100,
         rotation,
         updateBase
     };
@@ -170,31 +171,31 @@ const createDrop = (
 
     const update = () => {
         if (drop.position.y.value + drop.radius >= (canvasRef.value?.height ?? 0) && drop.bounces.value < 3) {
-            if (drop.bounces.value < 3) {
-                drop.bounces.value++
+            drop.bounces.value++
 
-                // resize every bounce
-                drop.radius *= 0.7
+            // resize every bounce
+            drop.radius *= 0.7
 
-                // rotation after bounce
-                drop.rotation.value += (Math.random() - 0.5) * 0.8 * Math.PI // adjust this for a larger/smaller rotation
+            // rotation after bounce
+            drop.rotation.value += (Math.random() - 0.5) * 0.8 * Math.PI // adjust this for a larger/smaller rotation
 
-                // chang direction every bounce for simulate a real jump
-                drop.velocity.y.value = -drop.velocity.y.value * 0.5
-            }
+            // change direction every bounce to simulate a real jump
+            drop.velocity.y.value = -drop.velocity.y.value * 0.7
         } else {
             drop.velocity.y.value += 0.1
         }
+
         // create fragments
         if (drop.bounces.value === 3) {
             const fragments: Droplet[] = []
             for (let i = 0; i < 3; i++) {
                 const fragment = createDroplet(drop.position.x.value, drop.position.y.value)
-                fragments.push(fragment);
+                fragments.push(fragment)
             }
             droplets.push(...fragments)
             drop.bounces.value++
         }
+
         drop.updateBase()
     }
 
@@ -225,8 +226,6 @@ const createDroplet = (
         droplet.updateBase()
         droplet.timeToLive = droplet.timeToLive !== undefined ? droplet.timeToLive - 1 : 100
     }
-    // reload initial position
-    droplet.position.y.value += droplet.radius
 
     return {
         ...droplet,

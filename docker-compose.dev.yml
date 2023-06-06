@@ -6,4 +6,4 @@ services:
       - ./config/nginx/sites-dev:/etc/nginx/sites-enabled
 
   node:
-    command: sh -c "npm run dev" 
+    command: sh -c "npm install && npm run dev" 

@@ -10,7 +10,7 @@ export interface DropBase {
     color: string;
     radius: number;
     updateBase: () => void;
-    timeToLive?: number;
+    timeToLive: number;
     value: string;
     rotation: Ref<number>;
     bounces: Ref<number>;

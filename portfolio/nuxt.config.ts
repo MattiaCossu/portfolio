@@ -10,7 +10,6 @@ export default defineNuxtConfig({
 
     modules: [
         '@vueuse/nuxt',
-        'nuxt-use-motion',
     ],
 
     

@@ -33,8 +33,8 @@ onUnmounted(() => {
         <canvas ref="canvas"></canvas>
         <div class="hero--container">
             <p class="hero--heading">Hi all, I am</p>
-            <h1 v-motion-roll-left class="hero--title">Mattia</h1>
-            <h2  v-motion-roll-left class="hero--subtitle">> Computer Scientist</h2>    
+            <h1 class="hero--title">Mattia</h1>
+            <h2 class="hero--subtitle">> Computer Scientist</h2>    
             <div class="hero--content">
                 <div>// welcome to my portfolio</div>
                 <div>// you can also see my projects on my Github page</div>

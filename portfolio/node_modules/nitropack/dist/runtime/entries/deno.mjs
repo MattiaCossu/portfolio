@@ -1,6 +1,5 @@
 import "#internal/nitro/virtual/polyfill";
 import { serve } from "https://deno.land/std/http/server.ts";
-import { requestHasBody, useRequestBody } from "../utils.mjs";
 import { nitroApp } from "../app.mjs";
 serve((request) => {
   return handleRequest(request);
@@ -8,8 +7,8 @@ serve((request) => {
 async function handleRequest(request) {
   const url = new URL(request.url);
   let body;
-  if (requestHasBody(request)) {
-    body = await useRequestBody(request);
+  if (request.body) {
+    body = await request.arrayBuffer();
   }
   const r = await nitroApp.localCall({
     url: url.pathname + url.search,

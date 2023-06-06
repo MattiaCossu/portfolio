@@ -7,7 +7,7 @@ import { parentPort, threadId } from 'node:worker_threads';
 import { provider, isWindows } from 'file:///var/www/html/portfolio/node_modules/std-env/dist/index.mjs';
 import { defineEventHandler, handleCacheHeaders, createEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseStatus, getRequestHeader, setResponseHeader, getRequestHeaders, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, getQuery as getQuery$1, createError } from 'file:///var/www/html/portfolio/node_modules/h3/dist/index.mjs';
 import { createRenderer } from 'file:///var/www/html/portfolio/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import devalue from 'file:///var/www/html/portfolio/node_modules/@nuxt/devalue/dist/devalue.mjs';
+import { stringify, uneval } from 'file:///var/www/html/portfolio/node_modules/devalue/index.js';
 import { renderToString } from 'file:///var/www/html/portfolio/node_modules/vue/server-renderer/index.mjs';
 import { createFetch as createFetch$1, Headers } from 'file:///var/www/html/portfolio/node_modules/ofetch/dist/node.mjs';
 import destr from 'file:///var/www/html/portfolio/node_modules/destr/dist/index.mjs';
@@ -15,59 +15,12 @@ import { createCall, createFetch } from 'file:///var/www/html/portfolio/node_mod
 import { createHooks } from 'file:///var/www/html/portfolio/node_modules/hookable/dist/index.mjs';
 import { snakeCase } from 'file:///var/www/html/portfolio/node_modules/scule/dist/index.mjs';
 import { klona } from 'file:///var/www/html/portfolio/node_modules/klona/dist/index.mjs';
+import defu, { defuFn } from 'file:///var/www/html/portfolio/node_modules/defu/dist/defu.mjs';
 import { hash } from 'file:///var/www/html/portfolio/node_modules/ohash/dist/index.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file:///var/www/html/portfolio/node_modules/ufo/dist/index.mjs';
 import { createStorage, prefixStorage } from 'file:///var/www/html/portfolio/node_modules/unstorage/dist/index.mjs';
 import unstorage_47drivers_47fs from 'file:///var/www/html/portfolio/node_modules/unstorage/drivers/fs.mjs';
 import { toRouteMatcher, createRouter } from 'file:///var/www/html/portfolio/node_modules/radix3/dist/index.mjs';
-
-function isObject(value) {
-  return value !== null && typeof value === "object";
-}
-function _defu(baseObject, defaults, namespace = ".", merger) {
-  if (!isObject(defaults)) {
-    return _defu(baseObject, {}, namespace, merger);
-  }
-  const object = Object.assign({}, defaults);
-  for (const key in baseObject) {
-    if (key === "__proto__" || key === "constructor") {
-      continue;
-    }
-    const value = baseObject[key];
-    if (value === null || value === void 0) {
-      continue;
-    }
-    if (merger && merger(object, key, value, namespace)) {
-      continue;
-    }
-    if (Array.isArray(value) && Array.isArray(object[key])) {
-      object[key] = [...value, ...object[key]];
-    } else if (isObject(value) && isObject(object[key])) {
-      object[key] = _defu(
-        value,
-        object[key],
-        (namespace ? `${namespace}.` : "") + key.toString(),
-        merger
-      );
-    } else {
-      object[key] = value;
-    }
-  }
-  return object;
-}
-function createDefu(merger) {
-  return (...arguments_) => (
-    // eslint-disable-next-line unicorn/no-array-reduce
-    arguments_.reduce((p, c) => _defu(p, c, "", merger), {})
-  );
-}
-const defu = createDefu();
-const defuFn = createDefu((object, key, currentValue) => {
-  if (typeof object[key] !== "undefined" && typeof currentValue === "function") {
-    object[key] = currentValue(object[key]);
-    return true;
-  }
-});
 
 const inlineAppConfig = {};
 
@@ -705,8 +658,8 @@ const _template = (messages) => _render({ messages: { ..._messages, ...messages 
 const template = _template;
 
 const errorDev = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  template: template
+      __proto__: null,
+      template: template
 });
 
 const appRootId = "__nuxt";
@@ -726,6 +679,7 @@ globalThis.__publicAssetsURL = publicAssetsURL;
 const getClientManifest = () => import('/var/www/html/portfolio/.nuxt/dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
 const getStaticRenderedHead = () => Promise.resolve().then(function () { return _virtual__headStatic$1; }).then((r) => r.default || r);
 const getServerEntry = () => import('/var/www/html/portfolio/.nuxt/dist/server/server.mjs').then((r) => r.default || r);
+const getSSRStyles = lazyCachedFunction(() => Promise.resolve().then(function () { return styles$1; }).then((r) => r.default || r));
 const getSSRRenderer = lazyCachedFunction(async () => {
   const manifest = await getClientManifest();
   if (!manifest) {
@@ -780,7 +734,7 @@ const getSPARenderer = lazyCachedFunction(async () => {
     renderToString
   };
 });
-const PAYLOAD_URL_RE = /\/_payload(\.[a-zA-Z0-9]+)?.js(\?.*)?$/;
+const PAYLOAD_URL_RE = /\/_payload(\.[a-zA-Z0-9]+)?.json(\?.*)?$/ ;
 const renderer = defineRenderHandler(async (event) => {
   const nitroApp = useNitroApp();
   const ssrError = event.node.req.url?.startsWith("/__nuxt_error") ? getQuery$1(event) : null;
@@ -795,7 +749,7 @@ const renderer = defineRenderHandler(async (event) => {
   }
   const islandContext = void 0;
   let url = ssrError?.url || islandContext?.url || event.node.req.url;
-  const isRenderingPayload = PAYLOAD_URL_RE.test(url);
+  const isRenderingPayload = PAYLOAD_URL_RE.test(url) && !islandContext;
   if (isRenderingPayload) {
     url = url.substring(0, url.lastIndexOf("/")) || "/";
     event.node.req.url = url;
@@ -834,14 +788,14 @@ const renderer = defineRenderHandler(async (event) => {
     return response2;
   }
   const renderedMeta = await ssrContext.renderMeta?.() ?? {};
-  const inlinedStyles = "";
+  const inlinedStyles = Boolean(islandContext) ? await renderInlineStyles(ssrContext.modules ?? ssrContext._registeredComponents ?? []) : "";
   const NO_SCRIPTS = routeOptions.experimentalNoScripts;
   const htmlContext = {
     island: Boolean(islandContext),
     htmlAttrs: normalizeChunks([renderedMeta.htmlAttrs]),
     head: normalizeChunks([
       renderedMeta.headTags,
-      null,
+      null ,
       NO_SCRIPTS ? null : _rendered.renderResourceHints(),
       _rendered.renderStyles(),
       inlinedStyles,
@@ -854,7 +808,7 @@ const renderer = defineRenderHandler(async (event) => {
     ]),
     body: [_rendered.html],
     bodyAppend: normalizeChunks([
-      NO_SCRIPTS ? void 0 : renderPayloadScript({ ssrContext, data: ssrContext.payload }),
+      NO_SCRIPTS ? void 0 : renderPayloadJsonScript({ id: "__NUXT_DATA__", ssrContext, data: ssrContext.payload }) ,
       routeOptions.experimentalNoScripts ? void 0 : _rendered.renderScripts(),
       // Note: bodyScripts may contain tags other than <script>
       renderedMeta.bodyScripts
@@ -900,20 +854,38 @@ function renderHTMLDocument(html) {
 <body ${joinAttrs(html.bodyAttrs)}>${joinTags(html.bodyPrepend)}${joinTags(html.body)}${joinTags(html.bodyAppend)}</body>
 </html>`;
 }
+async function renderInlineStyles(usedModules) {
+  const styleMap = await getSSRStyles();
+  const inlinedStyles = /* @__PURE__ */ new Set();
+  for (const mod of usedModules) {
+    if (mod in styleMap) {
+      for (const style of await styleMap[mod]()) {
+        inlinedStyles.add(`<style>${style}</style>`);
+      }
+    }
+  }
+  return Array.from(inlinedStyles).join("");
+}
 function renderPayloadResponse(ssrContext) {
   return {
-    body: `export default ${devalue(splitPayload(ssrContext).payload)}`,
+    body: stringify(splitPayload(ssrContext).payload, ssrContext._payloadReducers) ,
     statusCode: ssrContext.event.node.res.statusCode,
     statusMessage: ssrContext.event.node.res.statusMessage,
     headers: {
-      "content-type": "text/javascript;charset=utf-8",
+      "content-type": "application/json;charset=utf-8" ,
       "x-powered-by": "Nuxt"
     }
   };
 }
-function renderPayloadScript(opts) {
-  opts.data.config = opts.ssrContext.config;
-  return `<script>window.__NUXT__=${devalue(opts.data)}<\/script>`;
+function renderPayloadJsonScript(opts) {
+  const attrs = [
+    'type="application/json"',
+    `id="${opts.id}"`,
+    `data-ssr="${!(opts.ssrContext.noSSR)}"`,
+    opts.src ? `data-src="${opts.src}"` : ""
+  ].filter(Boolean);
+  const contents = opts.data ? stringify(opts.data, opts.ssrContext._payloadReducers) : "";
+  return `<script ${attrs.join(" ")}>${contents}<\/script><script>window.__NUXT__={};window.__NUXT__.config=${uneval(opts.ssrContext.config)}<\/script>`;
 }
 function splitPayload(ssrContext) {
   const { data, prerenderedAt, ...initial } = ssrContext.payload;
@@ -924,14 +896,21 @@ function splitPayload(ssrContext) {
 }
 
 const renderer$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  default: renderer
+      __proto__: null,
+      default: renderer
 });
 
 const _virtual__headStatic = {"headTags":"<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">","bodyTags":"","bodyTagsOpen":"","htmlAttrs":"","bodyAttrs":""};
 
 const _virtual__headStatic$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  default: _virtual__headStatic
+      __proto__: null,
+      default: _virtual__headStatic
+});
+
+const styles = {};
+
+const styles$1 = /*#__PURE__*/Object.freeze({
+      __proto__: null,
+      default: styles
 });
 //# sourceMappingURL=index.mjs.map
